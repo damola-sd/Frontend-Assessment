@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgres://lgllyayu:pBmRfXVFZ60eIRBrkvwjLefMVGWo_rPZ@rogue.db.elephantsql.com:5432/lgllyayu"
+  url      = env("DATABASE_URL)
 }
 
 model alembic_version {
