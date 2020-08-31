@@ -40,4 +40,40 @@ Notes("Create endpoint works as expected", async (context) => {
   assert.is(count, 1);
 });
 
+Notes("Update Note endpoint works as expected", async (context) => {
+  const createNote = await context.prisma.notes.create({
+    data: {
+      title: "Sample",
+      description: "Sample Note"
+    }
+  });
+  await request(App)
+    .put(`/notes/${createNote.id}`)
+    .send({
+      title: "Sample notes",
+      description: "This is a sample description",
+    })
+    .set("Accept", "application/json")
+    .expect("Content-Type", /json/)
+    .then((response) => {
+      assert.is(response.body.title, "Sample notes");
+    });
+});
+
+Notes("Delete Note endpoint works as expected", async (context) => {
+  const createNote = await context.prisma.notes.create({
+    data: {
+      title: "Sample",
+      description: "Sample Note"
+    }
+  });
+  await request(App)
+    .delete(`/notes/${createNote.id}`)
+    .then((response) => {
+      assert.is(response.body.title, "Sample");
+    });
+});
+
+
+
 Notes.run();
