@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL)
+  url      = env("DATABASE_URL")
 }
 
 model alembic_version {
@@ -15,4 +15,14 @@ model notes {
   id          Int     @default(autoincrement()) @id
   title       String?
   description String?
+  user_id     Int?
+  user        user?   @relation(fields: [user_id], references: [id])
+}
+
+model user {
+  id       Int     @default(autoincrement()) @id
+  email    String?
+  password String?
+  username String? @unique
+  notes    notes[]
 }
